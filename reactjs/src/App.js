@@ -36,7 +36,7 @@ export default function App() {
 
               return (
                 <tr>
-                  <td>{employee.pr_codpro}</td>
+                  <td> {employee.pr_codpro}</td>
                   <td>{employee.pr_descri}</td>
                   <td>{employee.pr_tamanh}</td>
                   <td>{employee.pr_estatu}</td>

@@ -1,54 +1,68 @@
-import './App.css'
 import api from './services/api'
 import { format } from 'date-fns'
 import { useEffect, useState } from 'react'
 import { FaTrashAlt, FaEdit, FaSave } from 'react-icons/fa'
 import axios from 'axios'
+import './App.css'
 
 export default function App() {
-  const [employees, setEmployees] = useState()
   const [employeesData, setEmployeesData] = useState()
+  const [isConsult, setIsConsult] = useState(true)
 
   useEffect(() => {
-    api
-      .get('/employees')
-      .then(response => {
-        setEmployeesData(response.data)
-        setEmployees(
-          response.data.reduce(
-            (acc, curr) => ({
-              ...acc,
-              [curr.pr_codpro]: {
-                pr_codpro: curr.pr_codpro,
-                pr_descri: curr.pr_descri,
-                pr_tamanh: curr.pr_tamanh,
-                pr_estatu: curr.pr_estatu,
-                isEdit: false
-              }
-            }),
-            {}
+    if (isConsult) {
+      setIsConsult(false)
+      api
+        .get('/employees')
+        .then(response => {
+          setEmployeesData(
+            response.data.reduce(
+              (acc, curr) => ({
+                ...acc,
+                [curr.pr_codpro]: {
+                  pr_codpro: curr.pr_codpro,
+                  pr_descri: curr.pr_descri,
+                  pr_tamanh: curr.pr_tamanh,
+                  pr_estatu: curr.pr_estatu,
+                  pr_datcri: curr.pr_datcri,
+                  isEdit: false
+                }
+              }),
+              {}
+            )
           )
-        )
-      })
-      .catch(err => {
-        console.error('ops! ocorreu um erro' + err)
-      })
-  })
+        })
+        .catch(err => {
+          console.error('ops! ocorreu um erro' + err)
+        })
+    }
+  }, [isConsult])
 
   const onDescription = (id, description) => {
-    console.log('Dirceu:', {
-      ...employees,
-      [id]: { ...employees[id], pr_descri: description }
-    })
-    setEmployees({
-      ...employees,
-      [id]: { ...employees[id], pr_descri: description }
+    setEmployeesData({
+      ...employeesData,
+      [id]: { ...employeesData[id], pr_descri: description }
     })
   }
 
-  const detele = async product => {
-    const { data } = await axios.delete(`http://localhost:3001/product`, {
+  const deleteData = async product => {
+    await axios.delete(`http://localhost:3001/product`, {
       params: { id: product }
+    })
+    setIsConsult(true)
+  }
+
+  const saveData = async (id, description) => {
+    await axios.delete(`http://localhost:3001/description`, {
+      params: { id, description }
+    })
+    setIsConsult(true)
+  }
+
+  const editData = id => {
+    setEmployeesData({
+      ...employeesData,
+      [id]: { ...employeesData[id], isEdit: true }
     })
   }
 
@@ -69,41 +83,49 @@ export default function App() {
         </thead>
         <tbody>
           {employeesData &&
-            employeesData.map(employee => {
+            Object.keys(employeesData).map(key => {
+              const employee = employeesData[key]
+
               const date = new Date(employee.pr_datcri)
 
               const formattedDate = format(date, 'dd/MM/yyyy')
-
-              //console.log('Dirceu 2:', employees[employee.pr_codpro].pr_descri)
 
               return (
                 <tr>
                   <td>{employee.pr_codpro}</td>
                   <td style={{ width: '40%' }}>
                     <input
+                      className="inputText"
                       style={{ width: '100%' }}
-                      value={employees[employee.pr_codpro].pr_descri}
+                      value={employee.pr_descri}
                       onChange={event =>
                         onDescription(employee.pr_codpro, event.target.value)
                       }
+                      disabled={!employee.isEdit}
                     />
                   </td>
                   <td>{employee.pr_tamanh}</td>
                   <td>{employee.pr_estatu}</td>
-                  <td> {formattedDate}</td>
+                  <td>{formattedDate}</td>
                   <td>
                     <center>
-                      <FaTrashAlt onClick={() => detele(employee.pr_codpro)} />
+                      <FaTrashAlt
+                        onClick={() => deleteData(employee.pr_codpro)}
+                      />
                     </center>
                   </td>
                   <td>
                     <center>
-                      <FaEdit />
+                      <FaEdit onClick={() => editData(employee.pr_codpro)} />
                     </center>
                   </td>
                   <td>
                     <center>
-                      <FaSave />
+                      <FaSave
+                        onClick={() =>
+                          saveData(employee.pr_codpro, employee.pr_descri)
+                        }
+                      />
                     </center>
                   </td>
                 </tr>

@@ -53,9 +53,7 @@ export default function App() {
   }
 
   const saveData = async (id, description) => {
-    await axios.delete(`http://localhost:3001/description`, {
-      params: { id, description }
-    })
+    await axios.put(`http://localhost:3001/description/${id}/${description}`)
     setIsConsult(true)
   }
 

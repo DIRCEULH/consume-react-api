@@ -23,12 +23,12 @@ export default function Home() {
             response.data.reduce(
               (acc, curr) => ({
                 ...acc,
-                [curr.pr_codpro]: {
-                  pr_codpro: curr.pr_codpro,
-                  pr_descri: curr.pr_descri,
-                  pr_tamanh: curr.pr_tamanh,
-                  pr_estatu: curr.pr_estatu,
-                  pr_datcri: curr.pr_datcri,
+                [curr.id]: {
+                  id: curr.id,
+                  content: curr.content,
+                  quanty: curr.quanty,
+                  updatedAt: curr.updatedAt,
+                  createdAt: curr.createdAt,
                   isEdit: false
                 }
               }),
@@ -63,7 +63,7 @@ export default function Home() {
   const onDescription = (id, description) => {
     setEmployeesData({
       ...employeesData,
-      [id]: { ...employeesData[id], pr_descri: description }
+      [id]: { ...employeesData[id], content: description }
     })
   }
 
@@ -99,10 +99,9 @@ export default function Home() {
     <div className="styled-table">
       <table>
         <thead>
-          <tr>
+          <tr id={'header'}>
             <th>Código:</th>
             <th>Descrição:</th>
-            <th>Tamanho:</th>
             <th>Quantidade:</th>
             <th>Data:</th>
             <th>Excluir:</th>
@@ -112,48 +111,43 @@ export default function Home() {
         </thead>
         <tbody>
           {employeesData &&
-            Object.keys(employeesData).map(key => {
+            Object.keys(employeesData).map((key, index) => {
               const employee = employeesData[key]
 
-              const date = new Date(employee.pr_datcri)
+              const date = new Date(employee.createdAt)
 
               const formattedDate = format(date, 'dd/MM/yyyy')
 
               return (
-                <tr>
-                  <td>{employee.pr_codpro}</td>
+                <tr id={index}>
+                  <td>{employee.id}</td>
                   <td style={{ width: '40%' }}>
                     <input
                       className="inputLabel"
                       style={{ width: '75%' }}
-                      value={employee.pr_descri}
+                      value={employee.content}
                       onChange={event =>
-                        onDescription(employee.pr_codpro, event.target.value)
+                        onDescription(employee.id, event.target.value)
                       }
                       disabled={!employee.isEdit}
                     />
                   </td>
-                  <td>{employee.pr_tamanh}</td>
-                  <td>{employee.pr_estatu}</td>
+                  <td>{employee.quanty}</td>
                   <td>{formattedDate}</td>
                   <td>
                     <center>
-                      <FaTrashAlt
-                        onClick={() => deleteData(employee.pr_codpro)}
-                      />
+                      <FaTrashAlt onClick={() => deleteData(employee.id)} />
                     </center>
                   </td>
                   <td>
                     <center>
-                      <FaEdit onClick={() => editData(employee.pr_codpro)} />
+                      <FaEdit onClick={() => editData(employee.id)} />
                     </center>
                   </td>
                   <td>
                     <center>
                       <FaSave
-                        onClick={() =>
-                          saveData(employee.pr_codpro, employee.pr_descri)
-                        }
+                        onClick={() => saveData(employee.id, employee.content)}
                       />
                     </center>
                   </td>

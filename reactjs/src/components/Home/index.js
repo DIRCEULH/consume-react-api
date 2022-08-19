@@ -10,6 +10,8 @@ import { useAlert } from 'react-alert'
 export default function Home() {
   const [employeesData, setEmployeesData] = useState()
   const [isConsult, setIsConsult] = useState(true)
+  const [quanty, setQuanty] = useState(0)
+  const [description, setDescription] = useState()
 
   const alert = useAlert()
 
@@ -88,6 +90,17 @@ export default function Home() {
     }
   }
 
+  const insertData = async (quanty, description) => {
+    if (!description) alert.error(`Campo Descricao Obrigatório!!`)
+    if (!quanty) alert.error(`Campo Quantidade Obrigatório!!`)
+    await axios.post(
+      `http://localhost:3001/insertProduct/${quanty}/${description}`
+    )
+    setDescription('')
+    setQuanty(0)
+    setIsConsult(true)
+  }
+
   const editData = id => {
     setEmployeesData({
       ...employeesData,
@@ -97,6 +110,33 @@ export default function Home() {
 
   return (
     <div className="styled-table">
+      <div style={{ width: '46.7%' }} className="divContent">
+        <input
+          id={'quanty'}
+          value={quanty}
+          className="inputText"
+          placeholder={'Digite a descrição do produto...'}
+          style={{ width: '35%' }}
+          onChange={data => setQuanty(data.target.value)}
+        ></input>
+        <input
+          id={'product'}
+          value={description}
+          className="inputText"
+          placeholder={'Digite quantidade do produto...'}
+          style={{ width: '35%' }}
+          onChange={data => setDescription(data.target.value)}
+        ></input>
+        <button
+          className="button"
+          style={{ width: '15%' }}
+          onClick={() => insertData(quanty, description)}
+        >
+          <center>
+            <FaSave />
+          </center>
+        </button>
+      </div>
       <table>
         <thead>
           <tr id={'header'}>

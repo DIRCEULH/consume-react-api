@@ -51,6 +51,38 @@
   border-radius: 5px;
 }
 
+.inputText {
+  background-color: #ffffff;
+  color: #000;
+  padding: 8px 20px;
+  text-align: left;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  border-radius: 5px;
+}
+
+.button {
+  background-color: #000;
+  border-radius: 5px 5px;
+  color: #ccc;
+  padding: 8px 20px;
+
+  display: inline-block;
+  margin: 4px 2px;
+}
+
+.divContent {
+  background-color: #009879;
+  border-radius: 5px 5px;
+  color: #ccc;
+  padding: 8px 20px;
+  display: inline-block;
+  margin: 4px 2px;
+  min-width: 400px;
+  padding: 12px 15px;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;

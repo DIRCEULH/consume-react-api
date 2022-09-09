@@ -91,8 +91,14 @@ export default function Home() {
   }
 
   const insertData = async (quanty, description) => {
-    if (!description) alert.error(`Campo Descricao Obrigatório!!`)
-    if (!quanty) alert.error(`Campo Quantidade Obrigatório!!`)
+    if (!description) {
+      alert.error(`Campo Descricao Obrigatório!!`)
+      return
+    }
+    if (!quanty) {
+      alert.error(`Campo Quantidade Obrigatório!!`)
+      return
+    }
     await axios.post(
       `http://localhost:3001/insertProduct/${quanty}/${description}`
     )
@@ -112,20 +118,20 @@ export default function Home() {
     <div className="styled-table">
       <div style={{ width: '46.7%' }} className="divContent">
         <input
-          id={'quanty'}
-          value={quanty}
-          className="inputText"
-          placeholder={'Digite a descrição do produto...'}
-          style={{ width: '35%' }}
-          onChange={data => setQuanty(data.target.value)}
-        ></input>
-        <input
           id={'product'}
           value={description}
           className="inputText"
-          placeholder={'Digite quantidade do produto...'}
+          placeholder={'Digite a descrição do produto...'}
           style={{ width: '35%' }}
           onChange={data => setDescription(data.target.value)}
+        ></input>
+        <input
+          id={'quanty'}
+          value={quanty}
+          className="inputText"
+          placeholder={'Digite a quantidade do produto...'}
+          style={{ width: '35%' }}
+          onChange={data => setQuanty(data.target.value)}
         ></input>
         <button
           className="button"

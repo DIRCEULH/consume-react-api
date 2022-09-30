@@ -8,10 +8,19 @@ import { FaTrashAlt, FaEdit, FaSave } from 'react-icons/fa'
 import { useAlert } from 'react-alert'
 
 export default function Home() {
-  const [employeesData, setEmployeesData] = useState()
+  const [employeesData, setEmployeesData] = useState([])
   const [isConsult, setIsConsult] = useState(true)
   const [quanty, setQuanty] = useState(0)
   const [description, setDescription] = useState()
+
+  const [itensPerPage, setItensPerPage] = useState(6)
+  const [currentPage, setCurrentPage] = useState(0)
+
+  const pages = Math.ceil(Object.keys(employeesData).length / itensPerPage)
+
+  const startIndex = currentPage * itensPerPage
+  const endIndex = startIndex + itensPerPage
+  const currentItens = Object.keys(employeesData).slice(startIndex, endIndex)
 
   const alert = useAlert()
 
@@ -115,8 +124,8 @@ export default function Home() {
   }
 
   return (
-    <div className="styled-table">
-      <div style={{ width: '46.7%' }} className="divContent">
+    <div style={{ width: '99%' }} className="styled-table">
+      <div style={{ width: '99.6%' }} className="divContent">
         <input
           id={'product'}
           value={description}
@@ -135,7 +144,7 @@ export default function Home() {
         ></input>
         <button
           className="button"
-          style={{ width: '15%' }}
+          style={{ width: '12%' }}
           onClick={() => insertData(quanty, description)}
         >
           <center>
@@ -143,7 +152,7 @@ export default function Home() {
           </center>
         </button>
       </div>
-      <table>
+      <table style={{ width: '100%' }}>
         <thead>
           <tr id={'header'}>
             <th>Código:</th>
@@ -156,8 +165,8 @@ export default function Home() {
           </tr>
         </thead>
         <tbody>
-          {employeesData &&
-            Object.keys(employeesData).map((key, index) => {
+          {currentItens &&
+            currentItens.map((key, index) => {
               const employee = employeesData[key]
 
               const date = new Date(employee.createdAt)
@@ -202,6 +211,21 @@ export default function Home() {
             })}
         </tbody>
       </table>
+      <div>
+        {Array.from(Array(pages), (item, index) => {
+          return (
+            <button
+              className="button"
+              value={index}
+              onClick={e => {
+                setCurrentPage(Number(e.target.value))
+              }}
+            >
+              {index}
+            </button>
+          )
+        })}
+      </div>
     </div>
   )
 }

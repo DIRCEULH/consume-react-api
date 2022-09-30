@@ -104,6 +104,18 @@
   color: white;
 }
 
+.pagination {
+  position: fixed;
+  z-index: 999;
+  left: 5px;
+  top: 650px;
+  overflow: hidden;
+  border: 2px solid #ccc;
+  padding: 6px;
+  width: 98%;
+  border-radius: 5px 5px;
+}
+
 .App-link {
   color: #61dafb;
 }

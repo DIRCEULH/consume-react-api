@@ -155,13 +155,13 @@ export default function Home() {
       <table style={{ width: '100%' }}>
         <thead>
           <tr id={'header'}>
-            <th>Código:</th>
-            <th>Descrição:</th>
-            <th>Quantidade:</th>
-            <th>Data:</th>
-            <th>Excluir:</th>
-            <th>Editar:</th>
-            <th>Salvar:</th>
+            <th>CÓDIGO:</th>
+            <th>DESCRIÇÃO:</th>
+            <th>QUANTIDADADE:</th>
+            <th>DATA:</th>
+            <th>EXCLUIR:</th>
+            <th>EDITAR:</th>
+            <th>SALVAR:</th>
           </tr>
         </thead>
         <tbody>
@@ -211,7 +211,7 @@ export default function Home() {
             })}
         </tbody>
       </table>
-      <div>
+      <div className="pagination">
         {Array.from(Array(pages), (item, index) => {
           return (
             <button

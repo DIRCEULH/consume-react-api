@@ -221,7 +221,7 @@ export default function Home() {
                 setCurrentPage(Number(e.target.value))
               }}
             >
-              {index}
+              {index + 1}
             </button>
           )
         })}

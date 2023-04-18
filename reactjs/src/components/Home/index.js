@@ -83,7 +83,7 @@ export default function Home() {
   }
 
   const deleteDataFinish = async product => {
-    await axios.delete(`http://192.168.33.4:3001/product`, {
+    await axios.delete(`http://localhost:3001/product`, {
       params: { id: product }
     })
     setIsConsult(true)
@@ -92,7 +92,7 @@ export default function Home() {
   const saveData = async (id, description) => {
     if (employeesData[id].isEdit) {
       await axios.put(
-        `http://192.168.33.4:3001/description/${id}/${description}`
+        `http://localhost:3001/description/${id}/${description}`
       )
       setIsConsult(true)
       alert.success('Alterado com sucesso!')
@@ -111,7 +111,7 @@ export default function Home() {
       return
     }
     await axios.post(
-      `http://192.168.33.4:3001/insertProduct/${quanty}/${description}`
+      `http://localhost:3001/insertProduct/${quanty}/${description}`
     )
     setDescription('')
     setQuanty(0)
